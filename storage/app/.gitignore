@@ -1,3 +1,6 @@
 *
 !public/
+!cities.csv
+!countries.csv
+!states.csv
 !.gitignore
