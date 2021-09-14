@@ -1,5 +1,6 @@
 *
 !public/
+!banks.csv
 !cities.csv
 !countries.csv
 !states.csv

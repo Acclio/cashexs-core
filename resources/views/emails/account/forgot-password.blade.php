@@ -349,7 +349,7 @@
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
                             <tr>
                                 <td class="logo" style="text-align: center;">
-                                    <img src="{{ asset('assets/images/cashexs-logo.png') }}">
+                                    <img src="https://cashexs.fra1.digitaloceanspaces.com/assets/cashexs-logo.png">
                                 </td>
                             </tr>
                         </table>
@@ -357,7 +357,7 @@
                 </tr>
                 <tr>
                     <td valign="middle" class="hero bg_white" style="padding: 1em 0 1em 0;">
-                        <img src="{{ asset('assets/images/confirmation-bg.png') }}" alt=""
+                        <img src="https://cashexs.fra1.digitaloceanspaces.com/assets/confirmation-bg.png" alt=""
                             style="width: 300px; max-width: 300px; height: auto; margin: auto; display: block;">
                     </td>
                 </tr>

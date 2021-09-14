@@ -15,7 +15,23 @@ class Country extends Model
         'active'
 	];
 
-	public function states()
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'active',
+        'created_at',
+        'updated_at'
+    ];
+
+	public function banks()
+	{
+		return $this->hasMany('App\Models\Bank');
+	}
+
+    public function states()
 	{
 		return $this->hasMany('App\Models\State');
 	}

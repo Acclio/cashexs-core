@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\UserIdentification;
+use App\Enums\Gender;
 use Illuminate\Http\Request;
+use function PHPSTORM_META\type;
 
-class UserIdentificationController extends Controller
+use App\Enums\IdentificationTypes;
+use App\Models\UserIdentification;
+
+class UserIdentificationController extends ServiceController
 {
     /**
      * Display a listing of the resource.
@@ -14,7 +18,54 @@ class UserIdentificationController extends Controller
      */
     public function index()
     {
-        //
+
+    }
+
+    /**
+     * Display a listing of identification types.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function types()
+    {
+        try {
+            $types = IdentificationTypes::asSelectArray();
+            $id_types = [];
+            foreach ($types as $key => $value) {
+                $type=[
+                    'name'=> $key,
+                    'value'=> $value
+                ];
+                array_push($id_types, $type);
+            }
+            return $this->success($id_types);
+        } catch (\Throwable $ex) {
+            return $this->server_error($ex);
+        }
+    }
+
+    /**
+     * Display a listing of identification types.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function genders()
+    {
+        try {
+            $genders = Gender::asSelectArray();
+            $gender_types = [];
+            foreach ($genders as $key => $value) {
+                $type=[
+                    'name'=> $key,
+                    'value'=> $value
+                ];
+                array_push($gender_types, $type);
+            }
+            $response['genders'] = $gender_types;
+            return $this->success($response);
+        } catch (\Throwable $ex) {
+            return $this->server_error($ex);
+        }
     }
 
     /**

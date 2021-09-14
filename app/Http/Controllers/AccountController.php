@@ -11,16 +11,21 @@ use App\Models\PasswordReset;
 use App\Mail\ResetPasswordEmail;
 use App\Mail\ForgotPasswordEmail;
 use App\Models\EmailConfirmation;
+use App\Models\UserIdentification;
 use App\Http\Requests\EmailRequest;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\SigninRequest;
 use App\Http\Requests\SignupRequest;
+use App\Http\Requests\UserIDRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Controllers\ServiceController;
 use App\Http\Requests\ConfirmSignupRequest;
 use App\Http\Requests\ResetPasswordRequest;
+use App\Http\Requests\UpdateProfileRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Mail\ConfirmationEmail As Confirmation;
 
 class AccountController extends ServiceController
@@ -350,6 +355,99 @@ class AccountController extends ServiceController
         }
         catch (\Throwable $ex)
         {
+            return $this->server_error($ex);
+        }
+    }
+
+    public function profile()
+    {
+        try {
+            $user = Auth::user();
+            $response['user'] = $user;
+            return $this->success($response);
+
+        } catch (\Throwable $ex) {
+            return $this->server_error($ex);
+        }
+    }
+
+    public function update(UpdateProfileRequest $request)
+    {
+        $data = $request->validated();
+        try {
+            $user = User::find(Auth::user()->id);
+            if(!$user)
+            {
+                $message = 'User not found';
+                return $this->not_found(null, $message);
+            }
+
+            $user->fill($data)->save();
+
+            $user = User::find(Auth::user()->id);
+
+            $response['user'] = $user;
+            return $this->success($response);
+
+        } catch (\Throwable $ex) {
+            return $this->server_error($ex);
+        }
+    }
+
+    public function changePassword(ChangePasswordRequest $request)
+    {
+        try
+        {
+            $data = $request->validated();
+
+            $user = Auth::user();
+
+            if(!Hash::check($data["current_password"], $user->password))
+            {
+                $message = 'Current password is incorrect';
+                $status = 'IncorrectPassword';
+                return $this->forbidden(null, $message, $status);
+            }
+
+            $user->fill(['password' => bcrypt($data['password'])])->save();
+            $response['user'] = $user;
+            return $this->success($response);
+        }
+        catch(\Throwable $ex)
+        {
+            return $this->server_error($ex);
+        }
+    }
+
+    /**
+     * Create or update user's identification.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function identification(UserIDRequest $request)
+    {
+        $data = $request->validated();
+        try {
+
+            $user = Auth::user();
+
+            $identification = Storage::disk('spaces')->putFile('users',$request->identification);
+            Storage::disk('spaces')->setVisibility($identification, 'public');
+
+            UserIdentification::updateOrCreate(
+                ['user_id' => $user->id],
+                [
+                    'identification_type' => $request->identification_type,
+                    'identification_no' => $request->identification_no,
+                    'identification' => ENV('DO_SPACES_BASEURL') . $identification,
+                ]
+            );
+
+            $response['user'] = $user;
+            return $this->success($response);
+
+        } catch (\Throwable $ex) {
             return $this->server_error($ex);
         }
     }
