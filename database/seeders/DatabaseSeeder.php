@@ -19,11 +19,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            //CountrySeeder::class,
-            //StateSeeder::class,
-            //CitySeeder::class,
+            CountrySeeder::class,
+            StateSeeder::class,
+            CitySeeder::class,
             BankSeeder::class
         ]);
-        //User::factory(2)->create();
+        User::factory(2)->create();
     }
 }
