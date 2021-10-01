@@ -100,7 +100,7 @@ class AccountController extends ServiceController
             $user = User::create($data);
 
             // Generate token
-            $confirmation_token = mt_rand(10000, 99999);
+            $confirmation_token = mt_rand(100000, 999999);
 
             // Persist email generation token
             EmailConfirmation::updateOrCreate(
@@ -221,7 +221,7 @@ class AccountController extends ServiceController
             }
 
             // Generate user token
-            $token = mt_rand(10000, 99999);
+            $token = mt_rand(100000, 999999);
 
             // Set password reset token
             PasswordReset::updateOrCreate(
@@ -325,7 +325,7 @@ class AccountController extends ServiceController
             }
 
             // Generate token
-            $confirmation_token = mt_rand(10000, 99999);
+            $confirmation_token = mt_rand(100000, 999999);
 
             // Persist email generation token
             EmailConfirmation::updateOrCreate(
@@ -419,12 +419,6 @@ class AccountController extends ServiceController
         }
     }
 
-    /**
-     * Create or update user's identification.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function identification(UserIDRequest $request)
     {
         $data = $request->validated();

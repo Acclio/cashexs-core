@@ -6,6 +6,7 @@ use App\Models\Beneficiary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BeneficiaryRequest;
+use App\Sourcery\Utilities;
 
 class BeneficiaryController extends ServiceController
 {
@@ -14,7 +15,7 @@ class BeneficiaryController extends ServiceController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $page_size = 20)
     {
         try
         {
@@ -27,13 +28,13 @@ class BeneficiaryController extends ServiceController
             ->orderBy('name', 'asc');
 
             // filter by country
-            if($request->has('country_id') && $request->filled('country_id') && $request->query('country_id') != "null")
+            if(Utilities::checkRequest($request, 'country_id'))
             {
                 $query = $query->where('country_id', $request->query('country_id'));
             }
 
             // search by a keyword
-            if($request->has('keyword') && $request->filled('keyword') && $request->query('keyword') != "null")
+            if(Utilities::checkRequest($request, 'keyword'))
             {
                 $search = $request->query('keyword');
                 $query = $query->where(function ($q) use ($search) {
@@ -42,7 +43,7 @@ class BeneficiaryController extends ServiceController
                 });
             }
 
-            $beneficiaries = $query->paginate(10);
+            $beneficiaries = $query->paginate($page_size);
 
             return $this->success($beneficiaries);
         }
@@ -61,6 +62,7 @@ class BeneficiaryController extends ServiceController
     public function store(BeneficiaryRequest $request)
     {
         try {
+            
             $data = $request->validated();
 
             $data['user_id'] = Auth::user()->id;

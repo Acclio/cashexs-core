@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Country;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
-class CountryController extends ServiceController
+class TransactionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,29 +14,7 @@ class CountryController extends ServiceController
      */
     public function index()
     {
-        try {
-            $countries = Country::where('active', true)->get();
-            $countries->makeHidden(['currency','currency_symbol', 'currency_code']);
-            return $this->success($countries);
-        } catch (\Throwable $th) {
-            return $this->server_error($th);
-        }
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function currencies()
-    {
-        try {
-            $currencies = Country::where('active', true)->get();
-            $currencies->makeHidden(['name','code']);
-            return $this->success($currencies);
-        } catch (\Throwable $th) {
-            return $this->server_error($th);
-        }
+        //
     }
 
     /**
@@ -63,10 +41,10 @@ class CountryController extends ServiceController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function show(Country $country)
+    public function show(Transaction $transaction)
     {
         //
     }
@@ -74,10 +52,10 @@ class CountryController extends ServiceController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function edit(Country $country)
+    public function edit(Transaction $transaction)
     {
         //
     }
@@ -86,10 +64,10 @@ class CountryController extends ServiceController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Country $country)
+    public function update(Request $request, Transaction $transaction)
     {
         //
     }
@@ -97,10 +75,10 @@ class CountryController extends ServiceController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Country  $country
+     * @param  \App\Models\Transaction  $transaction
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Country $country)
+    public function destroy(Transaction $transaction)
     {
         //
     }

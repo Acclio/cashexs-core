@@ -17,6 +17,9 @@ class CreateCountriesTable extends Migration
             $table->id();
             $table->string('name', 512);
             $table->string('code', 32);
+            $table->string('currency', 32);
+            $table->string('currency_symbol', 8);
+            $table->string('currency_code', 3);
             $table->boolean('active')->default(false);
             $table->timestamps();
         });
